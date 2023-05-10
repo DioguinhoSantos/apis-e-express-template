@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 import cors from 'cors'
 import { courses } from './database'
+import { TCourse } from './types'
 
 const app = express()
 
@@ -21,5 +22,23 @@ app.get ('/courses', ( req: Request, res: Response ) => {
 
 app.get('/courses/search', (req: Request, res: Response) => {
     const nome = req.query.q
+    
     res.status(200).send(nome)
 })
+
+app.post('/courses', (req: Request, res: Response) => {
+
+    const {id, name, lessons, stack} = req.body;
+
+    const newCourse: TCourse = {
+        id,
+        name,
+        lessons,
+        stack
+    }
+
+    courses.push(newCourse);
+
+    res.status(201).send('Cadastrado');
+})
+
